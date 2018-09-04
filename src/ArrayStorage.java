@@ -7,18 +7,23 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    int sizeOfStorage;
+
+    public ArrayStorage() {
+        sizeOfStorage = size();
+    }
 
     void clear() {
-        int sizeOfStorage = size();
         if (sizeOfStorage > 0) {
-            Arrays.fill(storage, 0, sizeOfStorage - 1, null);
+            Arrays.fill(storage, 0, sizeOfStorage, null);
+            sizeOfStorage = 0;
         }
     }
 
     void save(Resume r) {
-        int index = size();
-        if (index < storage.length) {
-            storage[index] = r;
+        if (sizeOfStorage < storage.length) {
+            storage[sizeOfStorage] = r;
+            sizeOfStorage++;
         }
     }
 
@@ -35,7 +40,6 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         int indexOfDeleteResume = -1;
-        int sizeOfStorage = size();
         for (int i = 0; i < sizeOfStorage; i++) {
             if (uuid.equals(storage[i].uuid)) {
                 storage[i] = null;
@@ -46,13 +50,16 @@ public class ArrayStorage {
                 storage[i] = null;
             }
         }
+        if (indexOfDeleteResume >= 0) {
+            sizeOfStorage--;
+        }
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] resumes = Arrays.copyOf(storage, size());
+        Resume[] resumes = Arrays.copyOf(storage, sizeOfStorage);
         return resumes;
     }
 
