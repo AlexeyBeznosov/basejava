@@ -9,10 +9,6 @@ public class ArrayStorage {
     Resume[] storage = new Resume[10000];
     int sizeOfStorage;
 
-    public ArrayStorage() {
-        sizeOfStorage = size();
-    }
-
     void clear() {
         if (sizeOfStorage > 0) {
             Arrays.fill(storage, 0, sizeOfStorage, null);
@@ -64,13 +60,6 @@ public class ArrayStorage {
     }
 
     int size() {
-        int count = 0;
-        while (storage[count] != null) {
-            count++;
-            if (count == storage.length) {
-                break;
-            }
-        }
-        return count;
+        return sizeOfStorage;
     }
 }
