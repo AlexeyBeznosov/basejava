@@ -1,5 +1,3 @@
-import com.sun.org.apache.regexp.internal.RE;
-
 import java.util.Arrays;
 
 /**
@@ -17,37 +15,43 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (sizeOfStorage < storage.length) {
-            storage[sizeOfStorage] = r;
-            sizeOfStorage++;
+        if (isValidResume(r)) {
+            int index = findIndexOfResume(r);
+            if (index < 0) {
+                if (sizeOfStorage < storage.length) {
+                    storage[sizeOfStorage] = r;
+                    sizeOfStorage++;
+                }
+            } else {
+                System.out.println("Resume in storage");
+            }
         }
     }
 
     Resume get(String uuid) {
-        for (Resume resume : storage) {
-            if (resume != null && uuid != null) {
-                if (uuid.equals(resume.uuid)) {
-                    return resume;
-                }
+        if (isValidResume(uuid)) {
+            Resume resume = getResume(uuid);
+            int index = findIndexOfResume(resume);
+            if (index >= 0) {
+                return storage[index];
+            } else {
+                System.out.println("no resume with this uuid in storage");
             }
         }
         return null;
     }
 
     void delete(String uuid) {
-        int indexOfDeleteResume = -1;
-        for (int i = 0; i < sizeOfStorage; i++) {
-            if (uuid.equals(storage[i].uuid)) {
-                storage[i] = null;
-                indexOfDeleteResume = i;
+        if (isValidResume(uuid)) {
+            Resume resume = getResume(uuid);
+            int index = findIndexOfResume(resume);
+            if (index >= 0) {
+                storage[index] = storage[sizeOfStorage - 1];
+                storage[sizeOfStorage - 1] = null;
+                sizeOfStorage--;
+            } else {
+                System.out.println("no resume with this uuid in storage");
             }
-            if (indexOfDeleteResume >= 0 && indexOfDeleteResume < i) {
-                storage[i - 1] = storage[i];
-                storage[i] = null;
-            }
-        }
-        if (indexOfDeleteResume >= 0) {
-            sizeOfStorage--;
         }
     }
 
@@ -61,5 +65,51 @@ public class ArrayStorage {
 
     int size() {
         return sizeOfStorage;
+    }
+
+    void update(Resume resume) {
+        if (isValidResume(resume)) {
+            int index = findIndexOfResume(resume);
+            if (index >= 0) {
+                storage[index] = resume;
+            } else {
+                System.out.println("no resume with this uuid in storage");
+            }
+        }
+    }
+
+    int findIndexOfResume(Resume resume) {
+        for (int i = 0; i < sizeOfStorage; i++) {
+            if (storage[i].uuid.equals(resume.uuid)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    boolean isValidResume(Resume resume) {
+        if (resume != null) {
+            if (isValidResume(resume.uuid)) {
+                return true;
+            }
+        } else {
+            System.out.println("incorrect resume");
+        }
+        return false;
+    }
+
+    boolean isValidResume(String uuid) {
+        if (uuid != null) {
+            return true;
+        } else {
+            System.out.println("incorrect uuid");
+        }
+        return false;
+    }
+
+    Resume getResume(String uuid) {
+        Resume resume = new Resume();
+        resume.uuid = uuid;
+        return resume;
     }
 }
