@@ -25,7 +25,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = findIndexOfResume(resume.getUuid());
         if (index < 0) {
             if (size < storage.length) {
-                add(resume);
+                add(resume, index);
                 size++;
             } else {
                 System.out.println("storage is full");
@@ -75,7 +75,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int findIndexOfResume(String uuid);
 
-    protected abstract void add(Resume resume);
+    protected abstract void add(Resume resume, int index);
 
     protected abstract void del(int index);
 }
