@@ -5,7 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10000;
+    protected static final int STORAGE_LIMIT = 3;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
@@ -50,6 +50,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = findIndexOfResume(uuid);
         if (index >= 0) {
             del(index);
+            storage[size - 1] = null;
             size--;
         } else {
             System.out.println("no resume with uuid: " + uuid + " in storage");
