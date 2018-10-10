@@ -9,6 +9,8 @@ import ru.javawebinar.basejava.model.Resume;
 import static org.junit.Assert.*;
 
 public class AbstractArrayStorageTest {
+    private static final Resume resume = new Resume("uuid1");
+
     private Storage storage;
     private final String UUID_1 = "uuid1";
     private final String UUID_2 = "uuid2";
@@ -47,13 +49,12 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void get() throws Exception {
-        save();
+        Resume resumeReceive = storage.get("uuid1");
+        assertEquals(resume, resumeReceive);
     }
 
     @Test(expected = NotExistStorageException.class)
     public void delete() throws Exception {
-        Resume resume = createResume();
-        storage.save(resume);
         storage.delete(resume.getUuid());
         storage.get(resume.getUuid());
     }
@@ -66,11 +67,9 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume resumeUpdate = createResume();
-        storage.save(resumeUpdate);
-        storage.update(resumeUpdate);
-        Resume resumeReceive = storage.get(resumeUpdate.getUuid());
-        assertEquals(resumeUpdate, resumeReceive);
+        storage.update(resume);
+        Resume resumeReceive = storage.get(resume.getUuid());
+        assertEquals(resume, resumeReceive);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -80,17 +79,14 @@ public class AbstractArrayStorageTest {
 
     @Test(expected = StorageException.class)
     public void saveOverflow() {
-        while (true) {
-            Resume resume = new Resume();
+        while (storage.size() < AbstractArrayStorage.STORAGE_LIMIT) {
             try {
-                storage.save(resume);
+                storage.save(new Resume());
             } catch (StorageException e) {
-                if (storage.size() < AbstractArrayStorage.STORAGE_LIMIT) {
-                    fail();
-                }
-                throw e;
+                fail();
             }
         }
+        storage.save(new Resume());
     }
 
     private Resume createResume() {
