@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 public class AbstractArrayStorageTest {
     private static final Resume resume = new Resume("uuid1");
+    private static final Resume resumeSave = new Resume("uuid4");
 
     private Storage storage;
     private final String UUID_1 = "uuid1";
@@ -41,7 +42,6 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void save() throws Exception {
-        Resume resumeSave = createResume();
         storage.save(resumeSave);
         Resume resumeReceive = storage.get(resumeSave.getUuid());
         assertEquals(resumeSave, resumeReceive);
@@ -49,19 +49,19 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void get() throws Exception {
-        Resume resumeReceive = storage.get("uuid1");
+        Resume resumeReceive = storage.get(UUID_1);
         assertEquals(resume, resumeReceive);
     }
 
     @Test(expected = NotExistStorageException.class)
     public void delete() throws Exception {
-        storage.delete(resume.getUuid());
+        storage.delete(UUID_1);
         storage.get(resume.getUuid());
     }
 
     @Test
     public void getAll() throws Exception {
-        Resume[] arrayExpected = new Resume[]{new Resume("uuid1"), new Resume("uuid2"), new Resume("uuid3")};
+        Resume[] arrayExpected = new Resume[]{new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
         assertArrayEquals(arrayExpected, storage.getAll());
     }
 
@@ -87,9 +87,5 @@ public class AbstractArrayStorageTest {
             }
         }
         storage.save(new Resume());
-    }
-
-    private Resume createResume() {
-        return new Resume("uuid4");
     }
 }
