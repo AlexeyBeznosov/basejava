@@ -9,6 +9,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected int size;
+
+    @Override
+    public int getSize() {
+        return size;
+    }
 
     @Override
     public void clearStorage() {
@@ -17,7 +23,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getValueStorage(int index) {
+    protected Resume getValueStorage(int index, String uuid) {
         return storage[index];
     }
 
@@ -32,9 +38,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteFromStorage(int index) {
+    protected void deleteFromStorage(int index, String uuid) {
         del(index);
         storage[size - 1] = null;
+        size--;
     }
 
     /**

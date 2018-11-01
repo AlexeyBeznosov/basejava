@@ -9,7 +9,12 @@ import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
 
-    private Map<Integer, Resume> storage = new HashMap<>();
+    private Map<String, Resume> storage = new HashMap<>();
+
+    @Override
+    public int getSize() {
+        return storage.size();
+    }
 
     @Override
     public void clearStorage() {
@@ -18,28 +23,27 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void addToStorage(Resume resume, int index) {
-        storage.put(size, resume);
-        size++;
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
     protected int findIndexOfResume(String uuid) {
-        for (Map.Entry<Integer, Resume> mapEntry : storage.entrySet()) {
-            if (mapEntry.getValue().getUuid().equals(uuid)) {
-                return mapEntry.getKey();
+        for (Map.Entry<String, Resume> mapEntry : storage.entrySet()) {
+            if (mapEntry.getKey().equals(uuid)) {
+                return 0;
             }
         }
         return -1;
     }
 
     @Override
-    protected Resume getValueStorage(int index) {
-        return storage.get(index);
+    protected Resume getValueStorage(int index, String uuid) {
+        return storage.get(uuid);
     }
 
     @Override
-    protected void deleteFromStorage(int index) {
-        storage.remove(index);
+    protected void deleteFromStorage(int index, String uuid) {
+        storage.remove(uuid);
     }
 
     @Override
@@ -53,6 +57,6 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public void updateStorage(int index, Resume resume) {
-        storage.put(index, resume);
+        storage.put(resume.getUuid(), resume);
     }
 }

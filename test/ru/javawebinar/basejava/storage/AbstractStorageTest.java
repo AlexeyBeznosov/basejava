@@ -13,9 +13,9 @@ public class AbstractStorageTest {
     private static final Resume resumeSave = new Resume("uuid4");
 
     protected Storage storage;
-    private final String UUID_1 = "uuid1";
-    private final String UUID_2 = "uuid2";
-    private final String UUID_3 = "uuid3";
+    protected final String UUID_1 = "uuid1";
+    protected final String UUID_2 = "uuid2";
+    protected final String UUID_3 = "uuid3";
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
