@@ -12,7 +12,7 @@ public class MapStorage extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    public int getSize() {
+    public int size() {
         return storage.size();
     }
 
@@ -22,32 +22,32 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void addToStorage(Resume resume, int index) {
+    protected void addToStorage(Resume resume, Object index) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected int findIndexOfResume(String uuid) {
-        for (Map.Entry<String, Resume> mapEntry : storage.entrySet()) {
-            if (mapEntry.getKey().equals(uuid)) {
-                return 0;
-            }
-        }
-        return -1;
+    protected Object findIndexOfResume(String uuid) {
+        return storage.containsKey(uuid) ? uuid : "";
     }
 
     @Override
-    protected Resume getValueStorage(int index, String uuid) {
-        return storage.get(uuid);
+    protected boolean checkIndexExist(Object index) {
+        return !((String) index).equals("");
     }
 
     @Override
-    protected void deleteFromStorage(int index, String uuid) {
-        storage.remove(uuid);
+    protected Resume getValueStorage(Object index) {
+        return storage.get((String) index);
     }
 
     @Override
-    public Resume[] getAllFromStorage() {
+    protected void deleteFromStorage(Object index) {
+        storage.remove((String) index);
+    }
+
+    @Override
+    public Resume[] getAll() {
         List<Resume> list = new ArrayList<>();
         for (Map.Entry map : storage.entrySet()) {
             list.add((Resume) map.getValue());
@@ -56,7 +56,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void updateStorage(int index, Resume resume) {
-        storage.put(resume.getUuid(), resume);
+    public void updateStorage(Object index, Resume resume) {
+        storage.put((String) index, resume);
     }
 }

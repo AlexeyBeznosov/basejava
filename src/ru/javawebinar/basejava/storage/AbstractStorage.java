@@ -7,14 +7,9 @@ import ru.javawebinar.basejava.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     @Override
-    public int size() {
-        return getSize();
-    }
-
-    @Override
     public void save(Resume resume) {
-        int index = findIndexOfResume(resume.getUuid());
-        if (index < 0) {
+        Object index = findIndexOfResume(resume.getUuid());
+        if (!checkIndexExist(index)) {
             addToStorage(resume, index);
         } else {
             throw new ExistStorageException(resume.getUuid());
@@ -23,9 +18,9 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        int index = findIndexOfResume(uuid);
-        if (index >= 0) {
-            return getValueStorage(index, uuid);
+        Object index = findIndexOfResume(uuid);
+        if (checkIndexExist(index)) {
+            return getValueStorage(index);
         } else {
             throw new NotExistStorageException(uuid);
         }
@@ -33,17 +28,12 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        int index = findIndexOfResume(uuid);
-        if (index >= 0) {
-            deleteFromStorage(index, uuid);
+        Object index = findIndexOfResume(uuid);
+        if (checkIndexExist(index)) {
+            deleteFromStorage(index);
         } else {
             throw new NotExistStorageException(uuid);
         }
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return getAllFromStorage();
     }
 
     @Override
@@ -53,27 +43,25 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        int index = findIndexOfResume(resume.getUuid());
-        if (index >= 0) {
+        Object index = findIndexOfResume(resume.getUuid());
+        if (checkIndexExist(index)) {
             updateStorage(index, resume);
         } else {
             throw new NotExistStorageException(resume.getUuid());
         }
     }
 
-    protected abstract void updateStorage(int index, Resume resume);
+    protected abstract void updateStorage(Object index, Resume resume);
 
     protected abstract void clearStorage();
 
-    protected abstract void deleteFromStorage(int index, String uuid);
+    protected abstract void deleteFromStorage(Object index);
 
-    protected abstract Resume getValueStorage(int index, String uuid);
+    protected abstract Resume getValueStorage(Object index);
 
-    protected abstract void addToStorage(Resume resume, int index);
+    protected abstract void addToStorage(Resume resume, Object index);
 
-    protected abstract int findIndexOfResume(String uuid);
+    protected abstract Object findIndexOfResume(String uuid);
 
-    protected abstract Resume[] getAllFromStorage();
-
-    protected abstract int getSize();
+    protected abstract boolean checkIndexExist(Object index);
 }
