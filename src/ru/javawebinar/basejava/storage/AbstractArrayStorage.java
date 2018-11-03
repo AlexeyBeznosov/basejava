@@ -17,7 +17,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void clearStorage() {
+    public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }

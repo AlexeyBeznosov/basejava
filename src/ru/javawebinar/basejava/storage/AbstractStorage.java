@@ -37,11 +37,6 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public void clear() {
-        clearStorage();
-    }
-
-    @Override
     public void update(Resume resume) {
         Object index = findIndexOfResume(resume.getUuid());
         if (checkIndexExist(index)) {
@@ -52,8 +47,6 @@ public abstract class AbstractStorage implements Storage {
     }
 
     protected abstract void updateStorage(Object index, Resume resume);
-
-    protected abstract void clearStorage();
 
     protected abstract void deleteFromStorage(Object index);
 

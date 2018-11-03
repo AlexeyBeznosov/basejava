@@ -2,9 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
@@ -17,7 +15,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void clearStorage() {
+    public void clear() {
         storage.clear();
     }
 
@@ -28,12 +26,12 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object findIndexOfResume(String uuid) {
-        return storage.containsKey(uuid) ? uuid : "";
+        return uuid;
     }
 
     @Override
     protected boolean checkIndexExist(Object index) {
-        return !((String) index).equals("");
+        return storage.containsKey((String) index);
     }
 
     @Override
@@ -48,11 +46,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        List<Resume> list = new ArrayList<>();
-        for (Map.Entry map : storage.entrySet()) {
-            list.add((Resume) map.getValue());
-        }
-        return list.toArray(new Resume[list.size()]);
+        return storage.values().toArray(new Resume[]{});
     }
 
     @Override
