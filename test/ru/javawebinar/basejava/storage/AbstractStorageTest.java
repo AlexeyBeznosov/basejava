@@ -9,13 +9,16 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class AbstractStorageTest {
-    private static final Resume resume = new Resume("uuid1");
-    private static final Resume resumeSave = new Resume("uuid4");
+    private static final Resume resume = new Resume("uuid1", "fullName1");
+    private static final Resume resumeSave = new Resume("uuid4", "fullName4");
 
     protected Storage storage;
     protected final String UUID_1 = "uuid1";
+    protected final String FULL_NAME_1 = "fullName1";
     protected final String UUID_2 = "uuid2";
+    protected final String FULL_NAME_2 = "fullName2";
     protected final String UUID_3 = "uuid3";
+    protected final String FULL_NAME_3 = "fullName3";
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -24,9 +27,9 @@ public class AbstractStorageTest {
     @Before
     public void setUp() {
         storage.clear();
-        storage.save(new Resume(UUID_1));
-        storage.save(new Resume(UUID_2));
-        storage.save(new Resume(UUID_3));
+        storage.save(new Resume(UUID_1, FULL_NAME_1));
+        storage.save(new Resume(UUID_2, FULL_NAME_2));
+        storage.save(new Resume(UUID_3, FULL_NAME_3));
     }
 
     @Test
@@ -54,9 +57,9 @@ public class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() throws Exception {
-        Resume[] arrayExpected = new Resume[]{new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
-        assertArrayEquals(arrayExpected, storage.getAll());
+    public void getAllSorted() throws Exception {
+        Resume[] arrayExpected = new Resume[]{new Resume(UUID_1, FULL_NAME_1), new Resume(UUID_2, FULL_NAME_2), new Resume(UUID_3, FULL_NAME_3)};
+        assertArrayEquals(arrayExpected, storage.getAllSorted().toArray());
     }
 
     @Test

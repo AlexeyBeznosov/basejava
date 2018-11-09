@@ -1,20 +1,21 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.MapStorage;
+import ru.javawebinar.basejava.storage.SortedArrayStorage;
 import ru.javawebinar.basejava.storage.Storage;
 
 /**
  * Test for your ru.javawebinar.basejava.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private static final Storage ARRAY_STORAGE = new MapStorage();
+    private static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
-        Resume r1 = new Resume("uuid1");
-        Resume r2 = new Resume("uuid2");
-        Resume r3 = new Resume("uuid3");
-        Resume r4 = new Resume("uuid4");
+        Resume r1 = new Resume("uuid1", "name3");
+        Resume r2 = new Resume("uuid2", "name2");
+        Resume r3 = new Resume("uuid3", "name3");
+        Resume r4 = new Resume("uuid4", "name3");
+        Resume r5 = new Resume("uuid5", "name3");
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
@@ -27,8 +28,8 @@ public class MainTestArrayStorage {
 
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());
-        ARRAY_STORAGE.save(new Resume("uuid4"));
-        ARRAY_STORAGE.save(new Resume("uuid5"));
+        ARRAY_STORAGE.save(r4);
+        ARRAY_STORAGE.save(r5);
         ARRAY_STORAGE.delete(r4.getUuid());
         printAll();
         ARRAY_STORAGE.clear();
@@ -39,7 +40,7 @@ public class MainTestArrayStorage {
 
     private static void printAll() {
         System.out.println("\nGet All");
-        for (Resume r : ARRAY_STORAGE.getAll()) {
+        for (Resume r : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(r);
         }
     }
