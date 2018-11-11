@@ -23,17 +23,17 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected void addToStorage(Resume resume, Object index) {
-        storage.put(((Resume) index).getUuid(), resume);
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
     protected Object findIndexOfResume(String uuid) {
-        return new Resume(uuid, "");
+        return storage.get(uuid);
     }
 
     @Override
     protected boolean checkIndexExist(Object index) {
-        return storage.containsKey(((Resume) index).getUuid());
+        return index != null;
     }
 
     @Override
@@ -47,10 +47,8 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>(storage.values());
-        list.sort(RESUME_COMPARATOR_BY_FULLNAME);
-        return list;
+    public List<Resume> getAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
