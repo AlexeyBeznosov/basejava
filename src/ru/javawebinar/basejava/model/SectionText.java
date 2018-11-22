@@ -1,14 +1,14 @@
 package ru.javawebinar.basejava.model;
 
-public class SectionOne implements Section {
+public class SectionText implements Section {
 
     private String text;
 
-    public SectionOne() {
+    public SectionText() {
         this("");
     }
 
-    public SectionOne(String text) {
+    public SectionText(String text) {
         this.text = text;
     }
 

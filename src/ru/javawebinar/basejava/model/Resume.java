@@ -11,7 +11,7 @@ public class Resume {
     private final String uuid;
     private final String fullName;
 
-    private Map<String, String> contacts = new HashMap<>();
+    private Map<ContactType, Contact> contacts = new HashMap<>();
     private Map<SectionType, Section> sections = new HashMap<>();
 
     public Resume(String fullName) {
@@ -33,8 +33,8 @@ public class Resume {
 
     public List<String> getContacts() {
         List<String> list = new ArrayList<>();
-        for (Map.Entry<String, String> map : contacts.entrySet()) {
-            list.add(map.getKey() + map.getValue());
+        for (Map.Entry<ContactType, Contact> map : contacts.entrySet()) {
+            list.add(map.getValue().getText());
         }
         return list;
     }
@@ -43,35 +43,35 @@ public class Resume {
         return new HashMap<>(sections);
     }
 
-    public void addContact(String title, String text) {
-        contacts.put(title, text);
+    public void addContact(ContactType contactType, String text, String url) {
+        contacts.put(contactType, new Contact(text, url));
     }
 
     public void addSection(SectionType sectionType) {
         Section section = null;
         switch (sectionType) {
             case OBJECTIVE: {
-                section = new SectionOne();
+                section = new SectionText();
                 break;
             }
             case PERSONAL: {
-                section = new SectionOne();
+                section = new SectionText();
                 break;
             }
             case ACHIEVEMENT: {
-                section = new SectionTwo();
+                section = new SectionList();
                 break;
             }
             case QUALIFICATIONS: {
-                section = new SectionTwo();
+                section = new SectionList();
                 break;
             }
             case EXPERIENCE: {
-                section = new SectionThree();
+                section = new SectionPeriodSkill();
                 break;
             }
             case EDUCATION: {
-                section = new SectionThree();
+                section = new SectionPeriodSkill();
                 break;
             }
         }

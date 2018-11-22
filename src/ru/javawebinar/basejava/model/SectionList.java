@@ -3,11 +3,11 @@ package ru.javawebinar.basejava.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SectionTwo implements Section {
+public class SectionList implements Section {
 
     private List<String> list = new ArrayList<>();
 
-    public SectionTwo() {
+    public SectionList() {
     }
 
     public List<String> getList() {
