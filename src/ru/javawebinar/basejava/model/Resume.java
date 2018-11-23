@@ -51,27 +51,27 @@ public class Resume {
         Section section = null;
         switch (sectionType) {
             case OBJECTIVE: {
-                section = new SectionText();
+                section = new TextSection();
                 break;
             }
             case PERSONAL: {
-                section = new SectionText();
+                section = new TextSection();
                 break;
             }
             case ACHIEVEMENT: {
-                section = new SectionList();
+                section = new ListSection();
                 break;
             }
             case QUALIFICATIONS: {
-                section = new SectionList();
+                section = new ListSection();
                 break;
             }
             case EXPERIENCE: {
-                section = new SectionPeriodSkill();
+                section = new PeriodSkillSection();
                 break;
             }
             case EDUCATION: {
-                section = new SectionPeriodSkill();
+                section = new PeriodSkillSection();
                 break;
             }
         }
