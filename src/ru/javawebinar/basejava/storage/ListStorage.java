@@ -5,7 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
 
     private List<Resume> storage = new ArrayList<>();
 
@@ -15,17 +15,17 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void addToStorage(Resume resume, Object index) {
+    protected void addToStorage(Resume resume, Integer index) {
         storage.add(resume);
     }
 
     @Override
-    protected Resume getValueStorage(Object index) {
-        return storage.get((int) index);
+    protected Resume getValueStorage(Integer index) {
+        return storage.get(index);
     }
 
     @Override
-    protected Object findIndexOfResume(String uuid) {
+    protected Integer findIndexOfResume(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -35,8 +35,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteFromStorage(Object index) {
-        storage.remove((int) index);
+    protected void deleteFromStorage(Integer index) {
+        storage.remove(index.intValue());
     }
 
     @Override
@@ -50,12 +50,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateStorage(Object index, Resume resume) {
-        storage.set((int) index, resume);
+    protected void updateStorage(Integer index, Resume resume) {
+        storage.set(index, resume);
     }
 
     @Override
-    protected boolean checkIndexExist(Object index) {
-        return ((int) index) >= 0;
+    protected boolean checkIndexExist(Integer index) {
+        return index >= 0;
     }
 }

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class ResumeTestData {
 
-    public static void main(String[] args) {
+    public void fillResume() {
         Resume resume = new Resume("Григорий Кислин");
         resume.addContact(ContactType.PHON_NUMBER,"Тел.: +7(921) 855-0482","");
         resume.addContact(ContactType.SKYPE,"Skype: grigory.kislin","skype:grigory.kislin");
@@ -16,12 +16,12 @@ public class ResumeTestData {
         resume.addContact(ContactType.STACKOVERFLOW,"Профиль Stackoverflow","https://stackoverflow.com/users/548473");
         resume.addContact(ContactType.HOME_PAGE,"Домашняя страница","http://gkislin.ru/");
 
-        resume.addSection(SectionType.OBJECTIVE);
-        resume.addSection(SectionType.PERSONAL);
-        resume.addSection(SectionType.ACHIEVEMENT);
-        resume.addSection(SectionType.QUALIFICATIONS);
-        resume.addSection(SectionType.EXPERIENCE);
-        resume.addSection(SectionType.EDUCATION);
+        resume.addSection(SectionType.OBJECTIVE, new TextSection());
+        resume.addSection(SectionType.PERSONAL, new TextSection());
+        resume.addSection(SectionType.ACHIEVEMENT, new ListSection());
+        resume.addSection(SectionType.QUALIFICATIONS, new ListSection());
+        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection());
+        resume.addSection(SectionType.EDUCATION, new OrganizationSection());
 
         String[] strings = new String[]{"Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"};
         resume.fillSection(SectionType.OBJECTIVE, strings);

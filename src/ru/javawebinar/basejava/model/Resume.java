@@ -11,8 +11,8 @@ public class Resume {
     private final String uuid;
     private final String fullName;
 
-    private Map<ContactType, Contact> contacts = new HashMap<>();
-    private Map<SectionType, Section> sections = new HashMap<>();
+    private Map<ContactType, Contact> contacts = new EnumMap<>(ContactType.class);
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -47,34 +47,7 @@ public class Resume {
         contacts.put(contactType, new Contact(text, url));
     }
 
-    public void addSection(SectionType sectionType) {
-        Section section = null;
-        switch (sectionType) {
-            case OBJECTIVE: {
-                section = new TextSection();
-                break;
-            }
-            case PERSONAL: {
-                section = new TextSection();
-                break;
-            }
-            case ACHIEVEMENT: {
-                section = new ListSection();
-                break;
-            }
-            case QUALIFICATIONS: {
-                section = new ListSection();
-                break;
-            }
-            case EXPERIENCE: {
-                section = new PeriodSkillSection();
-                break;
-            }
-            case EDUCATION: {
-                section = new PeriodSkillSection();
-                break;
-            }
-        }
+    public void addSection(SectionType sectionType, Section section) {
         sections.put(sectionType, section);
     }
 
