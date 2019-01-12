@@ -17,6 +17,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not dorectory");
         }
+        if (!directory.canRead() || !directory.canWrite()) {
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
+        }
         this.directory = directory;
     }
 
@@ -31,12 +34,18 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteFromStorage(File file) {
-        file.delete();
+        doDelete(file);
     }
 
     @Override
-    protected Resume getValueStorage(File file) {
-        return doRead(file);
+    protected Resume getFromStorage(File file) {
+        Resume resume = null;
+        try {
+            resume = doRead(file);
+        } catch (IOException e) {
+            throw new StorageException(file.getName(), "IO Error", e);
+        }
+        return resume;
     }
 
     @Override
@@ -50,12 +59,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected File findIndexOfResume(String uuid) {
+    protected File getSearchKey(String uuid) {
         return new File(directory, uuid);
     }
 
     @Override
-    protected boolean checkIndexExist(File file) {
+    protected boolean isExist(File file) {
         return file.exists();
     }
 
@@ -63,8 +72,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected List<Resume> getAll() {
         List<Resume> resumes = new ArrayList<>();
         File[] files = directory.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            resumes.add(doRead(files[i]));
+        if (files != null) {
+            for (File file : files) {
+                Resume resume = getFromStorage(file);
+                resumes.add(resume);
+            }
         }
         return resumes;
     }
@@ -72,9 +84,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         File[] files = directory.listFiles();
-        if (files != null && files.length > 0) {
-            for (int i = 0; i < files.length; i++) {
-                files[i].delete();
+        if (files != null) {
+            for (File file : files) {
+                doDelete(file);
             }
         }
     }
@@ -88,7 +100,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return 0;
     }
 
+    private void doDelete(File file) {
+        if (!file.delete()) {
+            throw new SecurityException("can't delete: " + file.getName());
+        }
+    }
+
     protected abstract void doWrite(Resume resume, File file) throws IOException;
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(File file) throws IOException;
 }

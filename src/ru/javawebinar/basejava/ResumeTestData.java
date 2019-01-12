@@ -6,8 +6,8 @@ import java.time.LocalDate;
 
 public class ResumeTestData {
 
-    public void fillResume() {
-        Resume resume = new Resume("Григорий Кислин");
+    public static Resume getResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
         resume.addContact(ContactType.PHON_NUMBER,"Тел.: +7(921) 855-0482","");
         resume.addContact(ContactType.SKYPE,"Skype: grigory.kislin","skype:grigory.kislin");
         resume.addContact(ContactType.EMAIL,"Почта: gkislin@yandex.ru","mailto:gkislin@yandex.ru");
@@ -206,5 +206,6 @@ public class ResumeTestData {
         objects[4] = "Закончил с отличием";
         objects[5] = "";
         resume.fillSection(SectionType.EDUCATION, objects);
+        return resume;
     }
 }

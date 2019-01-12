@@ -7,32 +7,32 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractStorage<T> implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
 
     protected static final Comparator<Resume> RESUME_COMPARATOR_BY_FULLNAME_UUID = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     @Override
     public void save(Resume resume) {
-        T index = getNotExistedIndex(resume.getUuid());
-        addToStorage(resume, index);
+        SK key = getNotExistedSearchKey(resume.getUuid());
+        addToStorage(resume, key);
     }
 
     @Override
     public Resume get(String uuid) {
-        T index = getExistedIndex(uuid);
-        return getValueStorage(index);
+        SK key = getExistedSearchKey(uuid);
+        return getFromStorage(key);
     }
 
     @Override
     public void delete(String uuid) {
-        T index = getExistedIndex(uuid);
-        deleteFromStorage(index);
+        SK key = getExistedSearchKey(uuid);
+        deleteFromStorage(key);
     }
 
     @Override
     public void update(Resume resume) {
-        T index = getExistedIndex(resume.getUuid());
-        updateStorage(index, resume);
+        SK key = getExistedSearchKey(resume.getUuid());
+        updateStorage(key, resume);
     }
 
     @Override
@@ -42,35 +42,35 @@ public abstract class AbstractStorage<T> implements Storage {
         return list;
     }
 
-    private T getExistedIndex(String uuid) {
-        T index = findIndexOfResume(uuid);
-        if (checkIndexExist(index)) {
-            return index;
+    private SK getExistedSearchKey(String uuid) {
+        SK key = getSearchKey(uuid);
+        if (isExist(key)) {
+            return key;
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    private T getNotExistedIndex(String uuid) {
-        T index = findIndexOfResume(uuid);
-        if (!checkIndexExist(index)) {
-            return index;
+    private SK getNotExistedSearchKey(String uuid) {
+        SK key = getSearchKey(uuid);
+        if (!isExist(key)) {
+            return key;
         } else {
             throw new ExistStorageException(uuid);
         }
     }
 
-    protected abstract void updateStorage(T index, Resume resume);
+    protected abstract void updateStorage(SK key, Resume resume);
 
-    protected abstract void deleteFromStorage(T index);
+    protected abstract void deleteFromStorage(SK key);
 
-    protected abstract Resume getValueStorage(T index);
+    protected abstract Resume getFromStorage(SK key);
 
-    protected abstract void addToStorage(Resume resume, T index);
+    protected abstract void addToStorage(Resume resume, SK key);
 
-    protected abstract T findIndexOfResume(String uuid);
+    protected abstract SK getSearchKey(String uuid);
 
-    protected abstract boolean checkIndexExist(T index);
+    protected abstract boolean isExist(SK key);
 
     protected abstract List<Resume> getAll();
 }

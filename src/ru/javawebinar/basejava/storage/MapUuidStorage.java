@@ -4,7 +4,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
-public class MapUuidStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage<String> {
 
     private Map<String, Resume> storage = new HashMap<>();
 
@@ -19,28 +19,28 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected void addToStorage(Resume resume, Object index) {
-        storage.put((String) index, resume);
+    protected void addToStorage(Resume resume, String key) {
+        storage.put(key, resume);
     }
 
     @Override
-    protected Object findIndexOfResume(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected boolean checkIndexExist(Object index) {
-        return storage.containsKey((String) index);
+    protected boolean isExist(String key) {
+        return storage.containsKey(key);
     }
 
     @Override
-    protected Resume getValueStorage(Object index) {
-        return storage.get((String) index);
+    protected Resume getFromStorage(String key) {
+        return storage.get(key);
     }
 
     @Override
-    protected void deleteFromStorage(Object index) {
-        storage.remove((String) index);
+    protected void deleteFromStorage(String key) {
+        storage.remove(key);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    public void updateStorage(Object index, Resume resume) {
-        storage.put((String) index, resume);
+    public void updateStorage(String key, Resume resume) {
+        storage.put(key, resume);
     }
 }

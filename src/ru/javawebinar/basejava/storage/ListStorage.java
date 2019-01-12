@@ -20,12 +20,12 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected Resume getValueStorage(Integer index) {
+    protected Resume getFromStorage(Integer index) {
         return storage.get(index);
     }
 
     @Override
-    protected Integer findIndexOfResume(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -55,7 +55,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean checkIndexExist(Integer index) {
+    protected boolean isExist(Integer index) {
         return index >= 0;
     }
 }

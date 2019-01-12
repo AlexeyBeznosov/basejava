@@ -5,17 +5,17 @@ import java.io.File;
 public class MainFile {
 
     public static void main(String[] args) {
-        File file = new File("C:\\project\\basejava\\src");
-        getChildFile(file);
+        File file = new File(".\\src");
+        displayFiles(file);
     }
 
-    private static void getChildFile(File file) {
+    private static void displayFiles(File file) {
         File[] files = file.listFiles();
-        if (files != null && files.length > 0) {
+        if (files != null) {
             for (File file1 : files) {
-                System.out.println(file1);
+                System.out.println(file1.getName());
                 if (file1.isDirectory()) {
-                    getChildFile(file1);
+                    displayFiles(file1);
                 }
             }
         }
