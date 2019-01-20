@@ -1,8 +1,8 @@
 package ru.javawebinar.basejava.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Organization {
 
@@ -10,11 +10,10 @@ public class Organization {
     private String url;
     private List<PeriodDescription> descriptions = new ArrayList<>();
 
-    public Organization(String name, String url, LocalDate dateOfBegin, LocalDate dateOfEnd, String title, String text) {
+    public Organization(String name, String url, List<PeriodDescription> descriptions) {
         this.name = name;
         this.url = url;
-        PeriodDescription periodDescription = new PeriodDescription(dateOfBegin, dateOfEnd, title, text);
-        descriptions.add(periodDescription);
+        this.descriptions = descriptions;
     }
 
     public String getName() {
@@ -33,8 +32,22 @@ public class Organization {
         this.url = url;
     }
 
-    public void addPeriod(LocalDate dateOfBegin, LocalDate dateOfEnd, String title, String text) {
-        PeriodDescription periodDescription = new PeriodDescription(dateOfBegin, dateOfEnd, title, text);
+    public void addPeriod(PeriodDescription periodDescription) {
         descriptions.add(periodDescription);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Organization)) return false;
+        Organization that = (Organization) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(url, that.url) &&
+                Objects.equals(descriptions, that.descriptions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, url, descriptions);
     }
 }

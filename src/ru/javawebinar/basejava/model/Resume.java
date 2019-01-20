@@ -31,42 +31,36 @@ public class Resume {
         return fullName;
     }
 
-    public List<String> getContacts() {
-        List<String> list = new ArrayList<>();
-        for (Map.Entry<ContactType, Contact> map : contacts.entrySet()) {
-            list.add(map.getValue().getText());
-        }
-        return list;
+    public List<Contact> getContacts() {
+        return new ArrayList<>(contacts.values());
     }
 
     public Map<SectionType, Section> getSections() {
         return new HashMap<>(sections);
     }
 
-    public void addContact(ContactType contactType, String text, String url) {
+    public void setContact(ContactType contactType, String text, String url) {
         contacts.put(contactType, new Contact(text, url));
     }
 
-    public void addSection(SectionType sectionType, Section section) {
+    public void setSection(SectionType sectionType, Section section) {
         sections.put(sectionType, section);
-    }
-
-    public void fillSection(SectionType sectionType, Object[] objects) {
-        sections.get(sectionType).save(objects);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Resume)) return false;
         Resume resume = (Resume) o;
         return Objects.equals(uuid, resume.uuid) &&
-                Objects.equals(fullName, resume.fullName);
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contacts, resume.contacts) &&
+                Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fullName);
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 
     @Override

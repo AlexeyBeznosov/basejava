@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Objects;
+
 public class TextSection implements Section {
 
     private String text;
@@ -16,13 +18,20 @@ public class TextSection implements Section {
         return text;
     }
 
-    @Override
-    public void save(Object[] text) {
-        this.text = (String) text[0];
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
-    public void clear() {
-        text = "";
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TextSection)) return false;
+        TextSection that = (TextSection) o;
+        return Objects.equals(text, that.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(text);
     }
 }

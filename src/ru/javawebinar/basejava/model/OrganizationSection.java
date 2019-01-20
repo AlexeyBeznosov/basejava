@@ -1,8 +1,8 @@
 package ru.javawebinar.basejava.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrganizationSection implements Section {
 
@@ -11,23 +11,24 @@ public class OrganizationSection implements Section {
     public OrganizationSection() {
     }
 
-    @Override
-    public void save(Object[] text) {
-        Organization organization = null;
-        for (Organization tempOrganization : organizations) {
-            if (tempOrganization.getName().equals((String) text[0])) {
-                organization = tempOrganization;
-                organization.addPeriod((LocalDate) text[2], (LocalDate) text[3], (String) text[4], (String) text[5]);
-            }
-        }
-        if (organization == null) {
-            organization = new Organization((String) text[0], (String) text[1], (LocalDate) text[2], (LocalDate) text[3], (String) text[4], (String) text[5]);
-            organizations.add(organization);
-        }
+    public OrganizationSection(List<Organization> organizations) {
+        this.organizations = organizations;
+    }
+
+    public void setOrganizations(List<Organization> organizations) {
+        this.organizations = organizations;
     }
 
     @Override
-    public void clear() {
-        organizations.clear();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OrganizationSection)) return false;
+        OrganizationSection that = (OrganizationSection) o;
+        return Objects.equals(organizations, that.organizations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(organizations);
     }
 }
