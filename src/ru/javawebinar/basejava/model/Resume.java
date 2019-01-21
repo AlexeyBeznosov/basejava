@@ -19,6 +19,8 @@ public class Resume {
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "UUID must not be null");
+        Objects.requireNonNull(fullName, "fullname must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
     }

@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.ResumeTestData;
+import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -47,22 +48,27 @@ public class AbstractStorageTest {
         assertEquals(resumeSave, resumeReceive);
     }
 
+    @Test(expected = ExistStorageException.class)
+    public void saveExist() throws Exception {
+        storage.save(resume);
+    }
+
     @Test
     public void get() throws Exception {
         Resume resumeReceive = storage.get(UUID1);
         assertEquals(resume, resumeReceive);
     }
 
+    @Test(expected = NotExistStorageException.class)
+    public void getNotExist() {
+        storage.get("dummy");
+    }
+
     @Test
     public void getAllSorted() throws Exception {
         List<Resume> list = storage.getAllSorted();
         assertEquals(3, list.size());
-        assertEquals(list, Arrays.asList(RESUME1, RESUME2, RESUME3));
-    }
-
-    @Test(expected = NotExistStorageException.class)
-    public void getNotExist() {
-        storage.get("dummy");
+        assertEquals(Arrays.asList(RESUME1, RESUME2, RESUME3), list);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -82,5 +88,10 @@ public class AbstractStorageTest {
         storage.update(resume);
         Resume resumeReceive = storage.get(UUID1);
         assertEquals(resume, resumeReceive);
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void updateNotExist() {
+        storage.update(resumeSave);
     }
 }

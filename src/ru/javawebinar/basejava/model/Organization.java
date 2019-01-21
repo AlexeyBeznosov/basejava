@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,9 +7,12 @@ public class Organization {
 
     private String name;
     private String url;
-    private List<PeriodDescription> descriptions = new ArrayList<>();
+    private List<PeriodDescription> descriptions;
 
     public Organization(String name, String url, List<PeriodDescription> descriptions) {
+        Objects.requireNonNull(name, "name must not be null");
+        Objects.requireNonNull(url, "url must not be null");
+        Objects.requireNonNull(descriptions, "descriptions must not be null");
         this.name = name;
         this.url = url;
         this.descriptions = descriptions;

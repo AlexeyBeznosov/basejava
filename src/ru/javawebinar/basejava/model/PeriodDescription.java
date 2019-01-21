@@ -12,6 +12,10 @@ public class PeriodDescription {
 
 
     public PeriodDescription(LocalDate dateOfBegin, LocalDate dateOfEnd, String title, String text) {
+        Objects.requireNonNull(dateOfBegin, "date must not be null");
+        Objects.requireNonNull(dateOfEnd, "date must not be null");
+        Objects.requireNonNull(title, "title must not be null");
+        Objects.requireNonNull(text, "text must not be null");
         this.dateOfBegin = dateOfBegin;
         this.dateOfEnd = dateOfEnd;
         this.title = title;
